@@ -1,14 +1,19 @@
 [tool.poetry]
-name = "python-project-83"
+name = "hexlet-code"
 version = "0.1.0"
 description = ""
 authors = ["ussury <meshalkins@ya.ru>"]
 readme = "README.md"
-packages = [{include = "python_project_83"}]
+packages = [{include = "page-analyzer"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+flask = "^2.3.1"
 
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.3.1"
+flake8 = "^6.0.0"
 
 [build-system]
 requires = ["poetry-core"]
