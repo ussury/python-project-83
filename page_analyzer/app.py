@@ -31,17 +31,17 @@ def urls():
     messages = get_flashed_messages(with_categories=True)
     if request.method == 'POST':
         url_site = request.form['url']
-        # parsed_url = urlparse(url_site)
-        # norm_url = f'{parsed_url.scheme}://{parsed_url.netloc}'
+        parsed_url = urlparse(url_site)
+        norm_url = f'{parsed_url.scheme}://{parsed_url.netloc}'
 
-        if not validators.url(url_site):
+        if not validators.url(norm_url):
             flash('Некорректный URL', 'alert-danger')
             return render_template('index.html',
                                    url=url_site,
                                    messages=messages), 422
 
-        parsed_url = urlparse(url_site)
-        norm_url = f'{parsed_url.scheme}://{parsed_url.netloc}'
+        # parsed_url = urlparse(url_site)
+        # norm_url = f'{parsed_url.scheme}://{parsed_url.netloc}'
 
         if db.get_id_by_name(norm_url):
             flash("Страница уже существует", "alert-info")
