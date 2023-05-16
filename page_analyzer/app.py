@@ -32,11 +32,10 @@ def urls():
         url_site = request.form['url']
 
         if not validators.url(url_site):
-            message = get_flashed_messages(with_categories=True)
+            # message = get_flashed_messages(with_categories=True)
             flash('Некорректный URL', 'alert-danger')
             return render_template('index.html',
-                                   url=url_site,
-                                   messages=message), 422
+                                   url=url_site), 422
 
         parsed_url = urlparse(url_site)
         norm_url = f'{parsed_url.scheme}://{parsed_url.netloc}'
@@ -55,11 +54,11 @@ def urls():
 
 @app.route('/urls/<int:site_id>')
 def site(site_id):
-    message = get_flashed_messages(with_categories=True)
+    # message = get_flashed_messages(with_categories=True)
     site = db.get_site(site_id)
     checks = db.get_checks(site_id)
     return render_template('site.html', url=site,
-                           checks=checks, messages=message)
+                           checks=checks)
 
 
 @app.post('/urls/<int:site_id>/checks')
