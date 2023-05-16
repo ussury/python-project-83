@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, \
     get_flashed_messages
 from page_analyzer import db
-from validators import url as is_correct
+import validators
 from urllib.parse import urlparse
 import requests
 from requests import exceptions as exc
@@ -28,13 +28,15 @@ def index():
 
 @app.route('/urls', methods=['GET', 'POST'])
 def urls():
-    messag = get_flashed_messages(with_categories=True)
+    messages = get_flashed_messages(with_categories=True)
     if request.method == 'POST':
         url_site = request.form['url']
+        # parsed_url = urlparse(url_site)
+        # norm_url = f'{parsed_url.scheme}://{parsed_url.netloc}'
 
-        if not is_correct(url_site):
+        if not validators.url(url_site):
             flash('Некорректный URL', 'alert-danger')
-            return render_template('index.html', messages=messag), 422
+            return render_template('index.html', messages=messages), 422
 
         parsed_url = urlparse(url_site)
         norm_url = f'{parsed_url.scheme}://{parsed_url.netloc}'
@@ -48,16 +50,16 @@ def urls():
         return redirect(url_for('site', site_id=site_id))
 
     urls = db.all_sites()
-    return render_template('urls.html', urls=urls, messages=messag)
+    return render_template('urls.html', urls=urls)
 
 
 @app.route('/urls/<int:site_id>')
 def site(site_id):
-    messag = get_flashed_messages(with_categories=True)
+    messages = get_flashed_messages(with_categories=True)
     site = db.get_site(site_id)
     checks = db.get_checks(site_id)
     return render_template('site.html', url=site,
-                           checks=checks, messages=messag)
+                           checks=checks, messages=messages)
 
 
 @app.post('/urls/<int:site_id>/checks')
