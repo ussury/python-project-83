@@ -90,7 +90,7 @@ def get_checks(id):
             rows = cur.fetchall()
 
     return [{'id': row[1],
-             'code': row[2],
+             'status_code': row[2],
              'h1': row[3],
              'title': row[4],
              'description': row[5],

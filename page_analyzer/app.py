@@ -1,5 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, \
-    get_flashed_messages
+from flask import Flask, render_template, request, redirect, url_for, flash
 from page_analyzer import db
 import validators
 from urllib.parse import urlparse
@@ -32,7 +31,6 @@ def urls():
         url_site = request.form['url']
 
         if not validators.url(url_site):
-            # message = get_flashed_messages(with_categories=True)
             flash('Некорректный URL', 'alert-danger')
             return render_template('index.html',
                                    url=url_site), 422
@@ -54,7 +52,6 @@ def urls():
 
 @app.route('/urls/<int:site_id>')
 def site(site_id):
-    # message = get_flashed_messages(with_categories=True)
     site = db.get_site(site_id)
     checks = db.get_checks(site_id)
     return render_template('site.html', url=site,
