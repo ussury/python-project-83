@@ -36,7 +36,9 @@ def urls():
 
         if not validators.url(url_site):
             flash('Некорректный URL', 'alert-danger')
-            return render_template('index.html', messages=messages), 422
+            return render_template('index.html',
+                                   url=url_site,
+                                   messages=messages), 422
 
         parsed_url = urlparse(url_site)
         norm_url = f'{parsed_url.scheme}://{parsed_url.netloc}'
